@@ -2,7 +2,7 @@
   "name": "samplebot",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "dependencies": {
     "botbuilder": "^3.4.4",
     "restify": "^4.3.0"
