@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/leon-barsamian/samplebot/issues"
   },
-  "homepage": "https://github.com/leon-barsamian/samplebot#readme"
+  "homepage": "https://github.com/leon-barsamian/samplebot#readme",
+  "engines": {
+    "node": "5.9.1"
+  }
 }
