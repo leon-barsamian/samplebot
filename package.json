@@ -22,6 +22,6 @@
   },
   "homepage": "https://github.com/leon-barsamian/samplebot#readme",
   "engines": {
-    "node": "5.9.1"
+    "node": "7.2.1"
   }
 }
