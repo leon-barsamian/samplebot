@@ -25,6 +25,10 @@ server.post('/api/messages', connector.listen());
 
 bot.dialog('/', function (session) {
     console.log('toussa');
-    session.send("Hello World");
+    try{
+	session.send("Hello World");
+    } catch(e){
+	console.log('error when replying: '+e);
+    }
 });
 
