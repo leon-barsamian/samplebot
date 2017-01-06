@@ -17,7 +17,8 @@ var connector = new builder.ChatConnector({
     appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
 var bot = new builder.UniversalBot(connector);
-server.post('/api/messages', connector.listen());
+//server.post('/api/messages', connector.listen());
+module.exports = { default: connector.listen() }
 
 //=========================================================
 // Bots Dialogs
