@@ -32,7 +32,10 @@ bot.dialog('/', function (session) {
     console.log(session.message.address);
     
     try{
-	session.send("Hello World");
+	session.send("User name : " + session.message.user.name 
+        + "<br> User id : "+ session.message.user.id 
+        + "<br> Adress : "+ session.message.address.conversation.id);
+
     } catch(e){
 	console.log('error when replying: '+e);
     }
