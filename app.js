@@ -24,7 +24,12 @@ server.post('/api/messages', connector.listen());
 //=========================================================
 
 bot.dialog('/', function (session) {
-    console.log('toussa');
+    console.log("User : ");
+    console.log(session.message.user);
+
+    console.log("Adress");
+    console.log(session.message.address);
+    
     try{
 	session.send("Hello World");
     } catch(e){
