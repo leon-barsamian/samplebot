@@ -39,6 +39,16 @@ bot.dialog('/', function (session) {
     } catch(e){
 	console.log('error when replying: '+e);
     }
+
+    var cards = getCardsAttachments();
+
+    // create reply with Carousel AttachmentLayout
+    var reply = new builder.Message(session)
+        .attachmentLayout(builder.AttachmentLayout.carousel)
+        .attachments(cards);
+
+    session.send(reply);
+    
 });
 
 // Bot dialog
