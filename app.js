@@ -20,40 +20,22 @@ var bot = new builder.UniversalBot(connector);
 server.post('/api/messages', connector.listen());
 //module.exports = { default: connector.listen() }
 
-//=========================================================
-// Bots Dialogs
-//=========================================================
-
-bot.dialog('/', function (session) {
+function logSessionInfo(session) {
     console.log("User : ");
     console.log(session.message.user);
 
     console.log("Adress");
     console.log(session.message.address);
-    
-/*    try{
-	session.send("User name : " + session.message.user.name 
-        + "<br> User id : "+ session.message.user.id 
-        + "<br> Adress : "+ session.message.address.conversation.id);
+}
+//=========================================================
+// Bots Dialogs
+//=========================================================
 
-    } catch(e){
-	console.log('error when replying: '+e);
-    }*/
-
-    var cards = getCardsAttachments();
-
-    // create reply with Carousel AttachmentLayout
-    var reply = new builder.Message(session)
-        .attachmentLayout(builder.AttachmentLayout.carousel)
-        .attachments(cards);
-
-    session.send(reply);
-    
-});
 
 // Bot dialog
 bot.dialog('/', [
     function (session) {
+        logSessionInfo(session);
         builder.Prompts.choice(session, 'What card would like to test?', CardNames, {
             maxRetries: 3,
             retryPrompt: 'Ooops, what you wrote is not a valid option, please try again'
