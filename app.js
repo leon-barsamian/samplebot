@@ -31,14 +31,14 @@ bot.dialog('/', function (session) {
     console.log("Adress");
     console.log(session.message.address);
     
-    try{
+/*    try{
 	session.send("User name : " + session.message.user.name 
         + "<br> User id : "+ session.message.user.id 
         + "<br> Adress : "+ session.message.address.conversation.id);
 
     } catch(e){
 	console.log('error when replying: '+e);
-    }
+    }*/
 
     var cards = getCardsAttachments();
 
