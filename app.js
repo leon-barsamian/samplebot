@@ -48,7 +48,14 @@ bot.dialog('/', [
         var card = createCard(selectedCardName, session);
 
         // attach the card to the reply message
-        var msg = new builder.Message(session).addAttachment(card);
+        // var msg = new builder.Message(session).addAttachment(card);
+        var card1 = createCard(selectedCardName, session);
+        var card2 = createCard(selectedCardName, session);
+
+        var msg = new builder.Message(session)
+        .attachmentLayout(builder.AttachmentLayout.carousel)
+        .attachments([card, card1, card2]);
+
         session.send(msg);
     }
 ]);
