@@ -8,9 +8,9 @@ var builder = require('botbuilder');
 // Setup Restify Server
 var server = restify.createServer();
 server.listen(process.env.port || process.env.PORT || 3978, function () {
-   console.log('%s listening to %s', server.name, server.url); 
+    console.log('%s listening to %s', server.name, server.url);
 });
-  
+
 // Create chat bot
 var connector = new builder.ChatConnector({
     appId: process.env.MICROSOFT_APP_ID,
@@ -23,7 +23,6 @@ server.post('/api/messages', connector.listen());
 function logSessionInfo(session) {
     console.log("User : ");
     console.log(session.message.user);
-
     console.log("Adress");
     console.log(session.message.address);
 }
@@ -32,15 +31,32 @@ function logSessionInfo(session) {
 //=========================================================
 
 
-// Bot dialog
+
 bot.dialog('/', [
+    function (session) {
+        logSessionInfo(session);
+        var arrayDebug = [session.message.user.id,
+        session.message.user.name,
+        session.message.address.channelId,
+        session.message.address.id,
+        session.message.address.conversation.id
+        ];
+        builder.Prompts.choice(session, 'debug infos : ', arrayDebug, {
+            maxRetries: 3,
+            retryPrompt: 'Debug Done.'
+        });
+    }
+]);
+// Bot dialog
+/*bot.dialog('/', [
     function (session) {
         logSessionInfo(session);
         builder.Prompts.choice(session, 'What card would like to test?', CardNames, {
             maxRetries: 3,
             retryPrompt: 'Ooops, what you wrote is not a valid option, please try again'
         });
-    },
+    }
+    ,
     function (session, results) {
 
         // create the card based on selection
@@ -53,12 +69,12 @@ bot.dialog('/', [
         var card2 = createCard(selectedCardName, session);
 
         var msg = new builder.Message(session)
-        .attachmentLayout(builder.AttachmentLayout.carousel)
-        .attachments([card, card1, card2]);
+            .attachmentLayout(builder.AttachmentLayout.carousel)
+            .attachments([card, card1, card2]);
 
         session.send(msg);
     }
-]);
+]);*/
 
 const HeroCardName = 'Hero card';
 const ThumbnailCardName = 'Thumbnail card';
