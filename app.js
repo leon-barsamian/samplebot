@@ -8,9 +8,9 @@ var builder = require('botbuilder');
 // Setup Restify Server
 var server = restify.createServer();
 server.listen(process.env.port || process.env.PORT || 3978, function () {
-   console.log('%s listening to %s', server.name, server.url); 
+    console.log('%s listening to %s', server.name, server.url);
 });
-  
+
 // Create chat bot
 var connector = new builder.ChatConnector({
     appId: process.env.MICROSOFT_APP_ID,
@@ -20,94 +20,140 @@ var bot = new builder.UniversalBot(connector);
 server.post('/api/messages', connector.listen());
 //module.exports = { default: connector.listen() }
 
+function logSessionInfo(session) {
+    console.log("User : ");
+    console.log(session.message.user);
+    console.log("Adress");
+    console.log(session.message.address);
+}
 //=========================================================
 // Bots Dialogs
 //=========================================================
 
-bot.dialog('/', function (session) {
-    console.log("User : ");
-    console.log(session.message.user);
 
-    console.log("Adress");
-    console.log(session.message.address);
-    
-    try{
-	session.send("User name : " + session.message.user.name 
-        + "<br> User id : "+ session.message.user.id 
-        + "<br> Adress : "+ session.message.address.conversation.id);
 
-    } catch(e){
-	console.log('error when replying: '+e);
+bot.dialog('/', [
+    function (session) {
+        logSessionInfo(session);
+        var arrayDebug = [session.message.user.id,
+        session.message.user.name,
+        session.message.address.channelId,
+        session.message.address.id,
+        session.message.address.conversation.id
+        ];
+        builder.Prompts.choice(session, 'debug infos : ', arrayDebug, {
+            maxRetries: 3,
+            retryPrompt: 'Debug Done.'
+        });
     }
-
-    var cards = getCardsAttachments();
-
-    // create reply with Carousel AttachmentLayout
-    var reply = new builder.Message(session)
-        .attachmentLayout(builder.AttachmentLayout.carousel)
-        .attachments(cards);
-
-    session.send(reply);
-    
-});
-
+]);
 // Bot dialog
-bot.dialog('/cards', function (session) {
-    var cards = getCardsAttachments();
+/*bot.dialog('/', [
+    function (session) {
+        logSessionInfo(session);
+        builder.Prompts.choice(session, 'What card would like to test?', CardNames, {
+            maxRetries: 3,
+            retryPrompt: 'Ooops, what you wrote is not a valid option, please try again'
+        });
+    }
+    ,
+    function (session, results) {
 
-    // create reply with Carousel AttachmentLayout
-    var reply = new builder.Message(session)
-        .attachmentLayout(builder.AttachmentLayout.carousel)
-        .attachments(cards);
+        // create the card based on selection
+        var selectedCardName = results.response.entity;
+        var card = createCard(selectedCardName, session);
 
-    session.send(reply);
-});
+        // attach the card to the reply message
+        // var msg = new builder.Message(session).addAttachment(card);
+        var card1 = createCard(selectedCardName, session);
+        var card2 = createCard(selectedCardName, session);
 
-function getCardsAttachments(session) {
+        var msg = new builder.Message(session)
+            .attachmentLayout(builder.AttachmentLayout.carousel)
+            .attachments([card, card1, card2]);
+
+        session.send(msg);
+    }
+]);*/
+
+const HeroCardName = 'Hero card';
+const ThumbnailCardName = 'Thumbnail card';
+const ReceiptCardName = 'Receipt card';
+const SigninCardName = 'Sign-in card';
+const CardNames = [HeroCardName, ThumbnailCardName, ReceiptCardName, SigninCardName];
+
+function createCard(selectedCardName, session) {
+    switch (selectedCardName) {
+        case HeroCardName:
+            return createHeroCard(session);
+        case ThumbnailCardName:
+            return createThumbnailCard(session);
+        case ReceiptCardName:
+            return createReceiptCard(session);
+        case SigninCardName:
+            return createSigninCard(session);
+        default:
+            return createHeroCard(session);
+    }
+}
+
+function createHeroCard(session) {
+    return new builder.HeroCard(session)
+        .title('BotFramework Hero Card')
+        .subtitle('Your bots — wherever your users are talking')
+        .text('Build and connect intelligent bots to interact with your users naturally wherever they are, from text/sms to Skype, Slack, Office 365 mail and other popular services.')
+        .images(getSampleCardImages(session))
+        .buttons(getSampleCardActions(session));
+}
+
+function createThumbnailCard(session) {
+    return new builder.ThumbnailCard(session)
+        .title('BotFramework Thumbnail Card')
+        .subtitle('Your bots — wherever your users are talking')
+        .text('Build and connect intelligent bots to interact with your users naturally wherever they are, from text/sms to Skype, Slack, Office 365 mail and other popular services.')
+        .images(getSampleCardImages(session))
+        .buttons(getSampleCardActions(session));
+}
+
+var order = 1234;
+function createReceiptCard(session) {
+    return new builder.ReceiptCard(session)
+        .title('John Doe')
+        .facts([
+            builder.Fact.create(session, order++, 'Order Number'),
+            builder.Fact.create(session, 'VISA 5555-****', 'Payment Method'),
+        ])
+        .items([
+            builder.ReceiptItem.create(session, '$ 38.45', 'Data Transfer')
+                .quantity(368)
+                .image(builder.CardImage.create(session, 'https://github.com/amido/azure-vector-icons/raw/master/renders/traffic-manager.png')),
+            builder.ReceiptItem.create(session, '$ 45.00', 'App Service')
+                .quantity(720)
+                .image(builder.CardImage.create(session, 'https://github.com/amido/azure-vector-icons/raw/master/renders/cloud-service.png'))
+        ])
+        .tax('$ 7.50')
+        .total('$ 90.95')
+        .buttons([
+            builder.CardAction.openUrl(session, 'https://azure.microsoft.com/en-us/pricing/', 'More Information')
+                .image('https://raw.githubusercontent.com/amido/azure-vector-icons/master/renders/microsoft-azure.png')
+        ]);
+}
+
+function createSigninCard(session) {
+    return new builder.SigninCard(session)
+        .text('BotFramework Sign-in Card')
+        .button('Sign-in', 'https://login.microsoftonline.com')
+}
+
+function getSampleCardImages(session) {
     return [
-        new builder.HeroCard(session)
-            .title('Azure Storage')
-            .subtitle('Massively scalable cloud storage for your applications')
-            .text('Store and help protect your data. Get durable, highly available data storage across the globe and pay only for what you use.')
-            .images([
-                builder.CardImage.create(session, 'https://acom.azurecomcdn.net/80C57D/cdn/mediahandler/docarticles/dpsmedia-prod/azure.microsoft.com/en-us/documentation/articles/storage-introduction/20160801042915/storage-concepts.png')
-            ])
-            .buttons([
-                builder.CardAction.openUrl(session, 'https://azure.microsoft.com/en-us/services/storage/', 'Learn More')
-            ]),
+        builder.CardImage.create(session, 'https://sec.ch9.ms/ch9/7ff5/e07cfef0-aa3b-40bb-9baa-7c9ef8ff7ff5/buildreactionbotframework_960.jpg')
+    ];
+}
 
-        new builder.ThumbnailCard(session)
-            .title('DocumentDB')
-            .subtitle('Blazing fast, planet-scale NoSQL')
-            .text('NoSQL service for highly available, globally distributed apps—take full advantage of SQL and JavaScript over document and key-value data without the hassles of on-premises or virtual machine-based cloud database options.')
-            .images([
-                builder.CardImage.create(session, 'https://sec.ch9.ms/ch9/29f4/beb4b953-ab91-4a31-b16a-71fb6d6829f4/WhatisAzureDocumentDB_960.jpg')
-            ])
-            .buttons([
-                builder.CardAction.openUrl(session, 'https://azure.microsoft.com/en-us/services/documentdb/', 'Learn More')
-            ]),
-
-        new builder.HeroCard(session)
-            .title('Azure Functions')
-            .subtitle('Process events with serverless code')
-            .text('Azure Functions is a serverless event driven experience that extends the existing Azure App Service platform. These nano-services can scale based on demand and you pay only for the resources you consume.')
-            .images([
-                builder.CardImage.create(session, 'https://azurecomcdn.azureedge.net/cvt-8636d9bb8d979834d655a5d39d1b4e86b12956a2bcfdb8beb04730b6daac1b86/images/page/services/functions/azure-functions-screenshot.png')
-            ])
-            .buttons([
-                builder.CardAction.openUrl(session, 'https://azure.microsoft.com/en-us/services/functions/', 'Learn More')
-            ]),
-
-        new builder.ThumbnailCard(session)
-            .title('Cognitive Services')
-            .subtitle('Build powerful intelligence into your applications to enable natural and contextual interactions')
-            .text('Enable natural and contextual interaction with tools that augment users\' experiences using the power of machine-based intelligence. Tap into an ever-growing collection of powerful artificial intelligence algorithms for vision, speech, language, and knowledge.')
-            .images([
-                builder.CardImage.create(session, 'https://azurecomcdn.azureedge.net/cvt-8636d9bb8d979834d655a5d39d1b4e86b12956a2bcfdb8beb04730b6daac1b86/images/page/services/functions/azure-functions-screenshot.png')
-            ])
-            .buttons([
-                builder.CardAction.openUrl(session, 'https://azure.microsoft.com/en-us/services/functions/', 'Learn More')
-            ])
+function getSampleCardActions(session) {
+    return [
+        builder.CardAction.openUrl(session, 'https://docs.botframework.com/en-us/', 'Get Started')
     ];
 }
 
