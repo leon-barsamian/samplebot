@@ -4,12 +4,17 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
+    "@types/node-schedule": "0.0.36",
+    "@types/restify": "^2.0.38",
     "botbuilder": "^3.4.4",
-    "restify": "^4.3.0"
+    "node-schedule": "^1.2.0",
+    "restify": "^4.3.0",
+    "typescript": "^2.1.5"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "rm -rf dist/* && node_modules/typescript/bin/tsc"
   },
   "repository": {
     "type": "git",
