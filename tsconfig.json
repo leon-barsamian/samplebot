@@ -5,9 +5,13 @@
         "moduleResolution": "node",
         "noEmitOnError": true,
         "noImplicitAny": true,
+        "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "outDir": "./dist"
     },
+    "include": [
+        "src/**/*"
+    ],
     "exclude": [
         "node_modules",
         "dist"

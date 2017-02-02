@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "Lancer le programme",
-            "program": "${workspaceRoot}/app.js",
+            "program": "${workspaceRoot}/dist/app.js",
             "cwd": "${workspaceRoot}"
         },
         {
