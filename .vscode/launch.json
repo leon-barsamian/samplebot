@@ -8,8 +8,12 @@
             "type": "node",
             "request": "launch",
             "name": "Lancer le programme",
-            "program": "${workspaceRoot}/dist/app.js",
-            "cwd": "${workspaceRoot}"
+            "program": "${workspaceRoot}/src/app.ts",
+            "cwd": "${workspaceRoot}",
+            "sourceMaps": true,
+            "outFiles": ["${workspaceRoot}/dist/**"],
+            //"preLaunchTask": "npm run tsc"
+            "preLaunchTask": "tsc"
         },
         {
             "type": "node",
