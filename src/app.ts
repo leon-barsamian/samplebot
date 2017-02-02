@@ -42,5 +42,33 @@ bot.dialog('/', [
         session.message.address.conversation.id
         ];
         builder.Prompts.text(session, "conversation id : "+session.message.address.conversation.id);
+        let card = createHeroCard(session);
+         var msg = new builder.Message(session)
+            .attachmentLayout(builder.AttachmentLayout.list)
+            .attachments([card]);
+
+        session.send(msg);
     }
 ]);
+
+function createHeroCard(session : builder.Session) : builder.HeroCard {
+    return new builder.HeroCard(session)
+        .title('BotFramework Hero Card')
+        .subtitle('Your bots — wherever your users are talking')
+        .text('Build and connect intelligent bots to interact with your users naturally wherever they are, from text/sms to Skype, Slack, Office 365 mail and other popular services.')
+        //.images(getSampleCardImages(session))
+        .buttons(getSampleCardActions(session));
+}
+
+function getSampleCardImages(session : builder.Session) : builder.CardImage[] {
+    return [
+        builder.CardImage.create(session, 'https://sec.ch9.ms/ch9/7ff5/e07cfef0-aa3b-40bb-9baa-7c9ef8ff7ff5/buildreactionbotframework_960.jpg')
+    ];
+}
+
+function getSampleCardActions(session : builder.Session) : builder.CardAction[] {
+    return [
+        builder.CardAction.imBack(session, "Plop Imback message", "imback title"),
+        builder.CardAction.postBack(session, "postBack message", "postBack title")
+    ];
+}
