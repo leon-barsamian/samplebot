@@ -1,17 +1,21 @@
-interface IConnector {
-    getName(): String;
+import {Dialog, IDialogWaterfallStep}  from "botbuilder";
+
+export interface IConnector {
+    getName(): string;
     getDescription(): String;
     execute(...optionalParams: any[]): void;
     getStatus(): ConnectorStatus;
+    getDialogPattern(): RegExp;
+    getDialog(): string|IDialogWaterfallStep[]|IDialogWaterfallStep;
 }
 
-class ConnectorStatus {
+export class ConnectorStatus {
     lastStartDate: Date;
-    lastExecutionStatus: String;
+    lastExecutionStatus: string;
     isRunning: Boolean;
 }
 
-class ConnectorHandler {
+export class ConnectorHandler {
 
     static connectors: IConnector[];
 
