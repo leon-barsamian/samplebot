@@ -69,6 +69,7 @@ let demoConnector: DemoConnector = new DemoConnector();
 
 bot.dialog('/', new builder.IntentDialog()
     .matches(demoConnector.getDialogPattern(), demoConnector.getDialog())
+    .matches(/^demo\/2$/i, demoConnector.getDialog2())
     .onDefault(function (session) {
         session.send("I didn't understand. Say hello to me!");
     }));
