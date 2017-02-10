@@ -1,11 +1,11 @@
 import { Dialog, IDialogWaterfallStep, Prompts, ListStyle } from "botbuilder";
-import { Mignon, MignonStatus } from "../core/core"
+import { Mignon, MignonStatus } from "../core/core";
 import * as builder from "botbuilder";
 
 
 export class DemoMignon implements Mignon {
 
-    private status: MignonStatus;
+    status: MignonStatus;
     getName() { return "DemoConnector" }
 
     getDescription() { return "way to create custom connector" }
@@ -14,9 +14,6 @@ export class DemoMignon implements Mignon {
 
     }
 
-    getStatus() {
-        return this.status;
-    }
 
     getDialogPattern() {
         return /^demo$/i;

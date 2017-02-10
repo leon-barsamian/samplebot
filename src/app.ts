@@ -1,10 +1,5 @@
-//var restify = require('restify');
-//var builder = require('botbuilder');
-
 import * as restify from "restify";
-// const {restify} = require('restify');
 import * as builder from "botbuilder";
-
 import { DemoMignon } from "./mignon/demoMignon/demoMignon"
 
 
@@ -28,6 +23,22 @@ let bot = new builder.UniversalBot(connector);
 server.post('/api/messages', connector.listen());
 
 
+server.post('/api/notify', function (req, res) {
+    // Process posted notification
+    var address = JSON.parse(req.body.address);
+    var notification = req.body.notification;
+
+    // Send notification as a proactive message
+    var msg = new builder.Message()
+        .address(address)
+        .text(notification);
+    bot.send(msg, function (err) {
+        // Return success/failure
+        res.status(err ? 500 : 200);
+        res.end();
+    });
+});
+
 //=========================================================
 // Bots Dialogs
 //=========================================================
@@ -37,11 +48,11 @@ let demoMignon: DemoMignon = new DemoMignon();
 
 
 bot.dialog('/', [function (session) {
-        session.beginDialog('/demo');
-    },
-    function (session, results) {
-        session.send('Bye.');
-    }]);
+    session.beginDialog('/demo');
+},
+function (session, results) {
+    session.send('Bye.');
+}]);
 
 
 
