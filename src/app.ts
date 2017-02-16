@@ -1,3 +1,5 @@
+import {Prompts} from 'botbuilder/lib/botbuilder';
+import {NetatmoMignon} from './mignon/netatmoMignon/netatmoMignon';
 import * as restify from "restify";
 import * as builder from "botbuilder";
 import { DemoMignon } from "./mignon/demoMignon/demoMignon"
@@ -20,6 +22,8 @@ let connector = new builder.ChatConnector({
     appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
 let bot = new builder.UniversalBot(connector);
+let intents = new builder.IntentDialog();
+
 server.post('/api/messages', connector.listen());
 
 
@@ -45,15 +49,24 @@ server.post('/api/notify', function (req, res) {
 
 
 let demoMignon: DemoMignon = new DemoMignon();
+let meteoMignon: NetatmoMignon = new NetatmoMignon();
 
 
-bot.dialog('/', [function (session) {
-    session.beginDialog('/demo');
-},
-function (session, results) {
-    session.send('Bye.');
-}]);
+bot.dialog('/', intents);
 
+intents.matches(/^demo$/i, function (session) {
+    session.beginDialog("/demo");
+});
 
+intents.matches(/^meteo$/i, function (session) {
+    session.beginDialog("/meteo");
+});
+
+intents.onDefault([
+    function (session, args, next) {
+        session.send("\\o/");
+    }
+]);
 
 demoMignon.create(bot);
+meteoMignon.create(bot);
