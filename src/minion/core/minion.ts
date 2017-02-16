@@ -1,8 +1,8 @@
-import { MignonStatus }  from "./mignonStatus";
+import { MinionStatus }  from "./minionStatus";
 import {UniversalBot}  from "botbuilder";
 
-export interface Mignon {
-    status: MignonStatus;
+export interface Minion {
+    status: MinionStatus;
     create(bot: UniversalBot): void;
     getName(): string;
     getDescription(): string;

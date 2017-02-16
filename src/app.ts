@@ -1,8 +1,8 @@
 import {Prompts} from 'botbuilder/lib/botbuilder';
-import {NetatmoMignon} from './mignon/netatmoMignon/netatmoMignon';
+import {NetatmoMinion} from './minion/netatmoMignon/netatmoMignon';
 import * as restify from "restify";
 import * as builder from "botbuilder";
-import { DemoMignon } from "./mignon/demoMignon/demoMignon"
+import { DemoMinion } from "./minion/demoMignon/demoMignon"
 
 
 
@@ -48,8 +48,8 @@ server.post('/api/notify', function (req, res) {
 //=========================================================
 
 
-let demoMignon: DemoMignon = new DemoMignon();
-let meteoMignon: NetatmoMignon = new NetatmoMignon();
+let demoMignon: DemoMinion = new DemoMinion();
+let meteoMignon: NetatmoMinion = new NetatmoMinion();
 
 
 bot.dialog('/', intents);

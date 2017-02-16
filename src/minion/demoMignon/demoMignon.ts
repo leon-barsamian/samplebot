@@ -1,11 +1,11 @@
 import { Dialog, IDialogWaterfallStep, Prompts, ListStyle } from "botbuilder";
-import { Mignon, MignonStatus } from "../core/core";
+import { Minion, MinionStatus } from "../core/core";
 import * as builder from "botbuilder";
 
 
-export class DemoMignon implements Mignon {
+export class DemoMinion implements Minion {
 
-    status: MignonStatus;
+    status: MinionStatus;
     getName() { return "DemoConnector" }
 
     getDescription() { return "way to create custom connector" }
@@ -41,7 +41,7 @@ export class DemoMignon implements Mignon {
         ];
     }
 
-    getPostbackImbackDialog(that: DemoMignon): Dialog | IDialogWaterfallStep[] | IDialogWaterfallStep {
+    getPostbackImbackDialog(that: DemoMinion): Dialog | IDialogWaterfallStep[] | IDialogWaterfallStep {
 
         return [
             function (session) {

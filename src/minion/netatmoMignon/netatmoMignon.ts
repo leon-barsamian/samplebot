@@ -1,10 +1,10 @@
 import { Dialog, IDialogWaterfallStep, Prompts, ListStyle } from "botbuilder";
-import { Mignon, MignonStatus } from "../core/core";
+import { Minion, MinionStatus } from "../core/core";
 import * as builder from "botbuilder";
 const netatmo = require('netatmo');
 
 
-export class NetatmoMignon implements Mignon {
+export class NetatmoMinion implements Minion {
 
     // api: any = new netatmo({
     //     "client_id": "",
@@ -12,7 +12,7 @@ export class NetatmoMignon implements Mignon {
     //     "username": "",
     //     "password": "",
     // });
-    status: MignonStatus;
+    status: MinionStatus;
 
     getName() { return "DemoConnector" }
 
