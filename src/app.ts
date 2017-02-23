@@ -1,8 +1,6 @@
-import {Prompts} from 'botbuilder/lib/botbuilder';
-import {NetatmoMinion} from './minion/netatmoMignon/netatmoMignon';
 import * as restify from "restify";
 import * as builder from "botbuilder";
-import { DemoMinion } from "./minion/demoMignon/demoMignon"
+import {Butler} from "./minion/butler";
 
 
 
@@ -47,26 +45,11 @@ server.post('/api/notify', function (req, res) {
 // Bots Dialogs
 //=========================================================
 
-
-let demoMignon: DemoMinion = new DemoMinion();
-let meteoMignon: NetatmoMinion = new NetatmoMinion();
-
-
 bot.dialog('/', intents);
+new Butler(bot, intents);
 
-intents.matches(/^demo$/i, function (session) {
-    session.beginDialog("/demo");
-});
 
-intents.matches(/^meteo$/i, function (session) {
-    session.beginDialog("/meteo");
-});
 
-intents.onDefault([
-    function (session, args, next) {
-        session.send("\\o/");
-    }
-]);
 
-demoMignon.create(bot);
-meteoMignon.create(bot);
+
+

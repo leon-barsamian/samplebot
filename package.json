@@ -4,8 +4,6 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
-    "@types/node-schedule": "0.0.36",
-    "@types/restify": "^2.0.38",
     "botbuilder": "^3.4.4",
     "mongodb": "^2.2.24",
     "netatmo": "^2.0.0",
@@ -13,7 +11,11 @@
     "restify": "^4.3.0",
     "typescript": "^2.1.5"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/mongodb": "^2.1.40",
+    "@types/node-schedule": "0.0.36",
+    "@types/restify": "^2.0.38"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "rm -rf dist/* && node_modules/typescript/bin/tsc",

@@ -1,18 +1,40 @@
-import {Dialog, IDialogWaterfallStep}  from "botbuilder";
+import { Remember } from './core/remember';
+import * as builder from "botbuilder";
+import {DemoMinion} from "./demoMignon/demoMignon";
+import {NetatmoMinion} from "./netatmoMignon/netatmoMignon";
+
+export class Butler {
+
+    private remember: Remember;
+
+    constructor(bot: builder.UniversalBot, intents: builder.IntentDialog) {
+        // Database connection
+        this.remember = new Remember();
+
+        let demoMignon: DemoMinion = new DemoMinion();
+        let meteoMignon: NetatmoMinion = new NetatmoMinion();
 
 
 
 
+        intents.matches(/^demo$/i, function (session) {
+            session.beginDialog("/demo");
+        });
 
-export class ConnectorHandler {
+        intents.matches(/^meteo$/i, function (session) {
+            session.beginDialog("/meteo");
+        });
 
-    //static connectors: SBConnector[];
+        intents.onDefault([
+            function (session, args, next) {
+                session.send("\\o/");
+            }
+        ]);
 
-    //get available connectors : return a list of available connectors
+        demoMignon.create(bot);
+        meteoMignon.create(bot);
 
-    // getActiveConnectors : return a list of active connectors. 
-    // active connectors are either :
-    //      - scheduled connectors 
-    //      - running connectors (ie if execute function take times)
-    // return a bot message (card ?) filled with ConnectorStatus information.
+    }
+
+
 }
